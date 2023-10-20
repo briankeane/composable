@@ -142,3 +142,13 @@ public func filter<A>(_ p: @escaping (A) -> Bool) -> ([A]) -> [A] {
 }
 
 
+precedencegroup BackwardsComposition {
+    associativity: left
+}
+infix operator <<<: BackwardsComposition
+
+public func <<< <A, B, C>(_ g: @escaping (B) -> C, f: @escaping ((A) -> B)) -> ((A) -> C) {
+    return { x in
+        g(f(x))
+    }
+}

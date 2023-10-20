@@ -67,7 +67,27 @@ pair
     |> first(incr >>> String.init)
 
 // pipeline without data
-//first(incr)
-//    >>> first.(String.init)
-//    >>> second(zurry(flip(String.uppercased)))
-//
+first(incr)
+    >>> first(String.init)
+    >>> second(zurry(flip(String.uppercased)))
+
+let nested = ((1, true), "Swift")
+
+nested
+    |> first { pair in pair |> second { !$0 } }
+
+nested
+    |> first { $0 |> second { !$0 } }
+
+nested
+    |> (first <<< second) { !$0 }
+
+let transformation = (first <<< second) { !$0 }
+  <> (first <<< first) { $0 + 1 }
+  <> second { $0 + "!" }
+
+nested |> transformation
+
+let nestedArray = (42, ["Swift", "Objective-C"])
+
+
